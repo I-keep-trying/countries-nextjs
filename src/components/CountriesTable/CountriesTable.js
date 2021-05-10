@@ -7,29 +7,21 @@ import { useState } from 'react'
 import styles from './CountriesTable.module.css'
 
 const orderBy = (countries, value, direction) => {
-  if (direction === 'asc') {
-    return [...countries].sort((a, b) => (a[value] > b[value] ? 1 : -1))
-  } else {
-    return [...countries].sort((a, b) => (a[value] > b[value] ? -1 : 1))
-  }
-
-  return countries
+  return direction === 'asc'
+    ? [...countries].sort((a, b) => (a[value] > b[value] ? 1 : -1))
+    : [...countries].sort((a, b) => (a[value] > b[value] ? -1 : 1))
 }
 
 const SortArrow = ({ direction }) => {
-  if (direction === 'desc') {
-    return (
-      <div className={styles.heading_arrow}>
-        <KeyboardArrowDownRounded color="inherit" />
-      </div>
-    )
-  } else {
-    return (
-      <div className={styles.heading_arrow}>
-        <KeyboardArrowUpRounded color="inherit" />
-      </div>
-    )
-  }
+  return direction === 'desc' ? (
+    <div className={styles.heading_arrow}>
+      <KeyboardArrowDownRounded color="inherit" />
+    </div>
+  ) : (
+    <div className={styles.heading_arrow}>
+      <KeyboardArrowUpRounded color="inherit" />
+    </div>
+  )
 }
 
 const CountriesTable = ({ countries }) => {

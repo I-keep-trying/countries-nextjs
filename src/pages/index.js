@@ -4,8 +4,11 @@ import CountriesTable from '../components/CountriesTable/CountriesTable'
 import Layout from '../components/Layout/Layout'
 import SearchInput from '../components/SearchInput/SearchInput'
 import styles from '../styles/Home.module.css'
+import countries from '../countriesList'
+import { nanoid } from 'nanoid'
 
-export default function Home({ countries }) {
+export default function Home() {
+ // console.log('countries from Home comp', countries[0])
   const [keyword, setKeyword] = useState('')
 
   const filteredCountries = countries.filter((country) =>
@@ -35,14 +38,12 @@ export default function Home({ countries }) {
           />
         </div>
       </div>
-
       <CountriesTable countries={filteredCountries} />
     </Layout>
   )
 }
 
-export const getStaticProps = async () => {
-  // console.log('src/pages/index.js process.env.NEXT_PUBLIC_HERE_KEY',process.env.NEXT_PUBLIC_HERE_KEY)
+/* export const getStaticProps = async () => {
   const res = await fetch('https://restcountries.eu/rest/v2/all')
   const countries = await res.json()
 
@@ -51,4 +52,4 @@ export const getStaticProps = async () => {
       countries,
     },
   }
-}
+} */

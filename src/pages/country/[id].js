@@ -2,12 +2,10 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Layout from '../../components/Layout/Layout'
 import styles from './Country.module.css'
+import countries from '../../countriesList'
 
 const getCountry = async (id) => {
-  // console.log('src/pages/country/[id].js process.env.NEXT_PUBLIC_HERE_KEY',process.env.NEXT_PUBLIC_HERE_KEY)
-  // console.log('country id', id)
   const res = await fetch(`https://restcountries.eu/rest/v2/alpha/${id}`)
-
   const country = await res.json()
 
   return country
@@ -27,7 +25,7 @@ const Country = ({ country }) => {
   useEffect(() => {
     getBorders()
   }, [])
-  console.log('borders', borders)
+
   return (
     <Layout title={country.name}>
       <div className={styles.container}>
@@ -122,10 +120,6 @@ const Country = ({ country }) => {
 export default Country
 
 export const getStaticPaths = async () => {
-  console.log('[id].js', process.env.NEXT_PUBLIC_HERE_KEY)
-  const res = await fetch('https://restcountries.eu/rest/v2/all')
-  const countries = await res.json()
-
   const paths = countries.map((country) => ({
     params: { id: country.alpha3Code },
   }))
