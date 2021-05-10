@@ -57,6 +57,10 @@
   border-bottom: 1px solid #e0e0e0;
 }
 
+.details_panel_value {
+  justify-content: flex-end;
+}
+
 .details_panel_label {
   color: var(--text-color-secondary);
 }

@@ -7,14 +7,6 @@ import styles from './Layout.module.css'
 const Layout = ({ children, title = 'World Ranks' }) => {
   const [theme, setTheme] = useState('light')
 
-  useEffect(() => {
-    document.documentElement.setAttribute(
-      'data-theme',
-      localStorage.getItem('theme')
-    )
-    setTheme(localStorage.getItem('theme'))
-  }, [])
-
   const switchTheme = () =>
     theme === 'light' ? saveTheme('dark') : saveTheme('light')
 

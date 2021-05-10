@@ -8,13 +8,6 @@ import styles from '../styles/Home.module.css'
 export default function Home({ countries }) {
   const [keyword, setKeyword] = useState('')
 
-  /*   const filteredCountries = countries.filter(
-    (country) =>
-      country.name.toLowerCase().includes(keyword) ||
-      country.region.toLowerCase().includes(keyword) ||
-      country.subregion.toLowerCase().includes(keyword)
-  ); */
-
   const filteredCountries = countries.filter((country) =>
     country.name.toLowerCase().startsWith(keyword)
   )
@@ -28,11 +21,11 @@ export default function Home({ countries }) {
     <Layout>
       <div className={styles.inputContainer}>
         <div className={styles.counts}>
-        {filteredCountries.length === 1 ? 
-        (<>Found {filteredCountries.length} country </>)
-        :
-        (<>Found {filteredCountries.length} countries</>)
-        }
+          {filteredCountries.length === 1 ? (
+            <>Found {filteredCountries.length} country </>
+          ) : (
+            <>Found {filteredCountries.length} countries</>
+          )}
         </div>
 
         <div className={styles.input}>

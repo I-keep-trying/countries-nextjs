@@ -5,7 +5,7 @@ import styles from './Country.module.css'
 
 const getCountry = async (id) => {
   // console.log('src/pages/country/[id].js process.env.NEXT_PUBLIC_HERE_KEY',process.env.NEXT_PUBLIC_HERE_KEY)
-  console.log('country id', id)
+  // console.log('country id', id)
   const res = await fetch(`https://restcountries.eu/rest/v2/alpha/${id}`)
 
   const country = await res.json()
