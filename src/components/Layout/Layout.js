@@ -1,10 +1,13 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { Brightness6Rounded } from '@material-ui/icons'
 import styles from './Layout.module.css'
+import { CountriesContext } from '../../libs/countries-context'
 
 const Layout = ({ children, title = 'World Ranks' }) => {
+  const [state, dispatch] = useContext(CountriesContext)
+  console.log('state', state.theme)
   const [theme, setTheme] = useState('light')
 
   const switchTheme = () =>

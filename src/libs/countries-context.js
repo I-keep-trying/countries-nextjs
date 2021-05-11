@@ -10,6 +10,7 @@ const initialState = {
   subregions: [],
   unit: 'metric',
   weather: {},
+  theme: 'light',
   loading: false,
   error: null,
 }
@@ -43,7 +44,6 @@ const reducer = (state, action) => {
         }),
       }
     case 'RESET':
-      //  return initialState
       return {
         ...state,
         countries: initialState.countries,
@@ -57,6 +57,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         weather: action.payload,
+      }
+    case 'SET_THEME':
+      console.log('action.payload theme', action.payload)
+      return {
+        ...state,
+        theme: action.payload,
       }
     case 'START':
       return {

@@ -1,5 +1,15 @@
+.unit {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
 .counts {
   margin: 12px 0;
+  color: var(--text-color-secondary);
+}
+
+.units {
+  margin: 12px 15px 12px 5px;
   color: var(--text-color-secondary);
 }
 

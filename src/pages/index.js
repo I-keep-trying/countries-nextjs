@@ -1,14 +1,14 @@
 import Head from 'next/head'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import CountriesTable from '../components/CountriesTable/CountriesTable'
 import Layout from '../components/Layout/Layout'
 import SearchInput from '../components/SearchInput/SearchInput'
 import styles from '../styles/Home.module.css'
 import countries from '../countriesList'
-import { nanoid } from 'nanoid'
+import { CountriesContext } from '../libs/countries-context'
 
 export default function Home() {
- // console.log('countries from Home comp', countries[0])
+  const [state, dispatch] = useContext(CountriesContext)
   const [keyword, setKeyword] = useState('')
 
   const filteredCountries = countries.filter((country) =>
@@ -18,6 +18,13 @@ export default function Home() {
   const onInputChange = (e) => {
     e.preventDefault()
     setKeyword(e.target.value.toLowerCase())
+  }
+
+  const handleUnitButtonClick = (u) => {
+    dispatch({
+      type: 'SET_UNIT',
+      payload: u,
+    })
   }
 
   return (
@@ -37,19 +44,23 @@ export default function Home() {
             onChange={onInputChange}
           />
         </div>
+        <div className={styles.units}>
+          Set Unit:{' '}
+          <span
+            className={styles.unit}
+            onClick={() => handleUnitButtonClick('imperial')}
+          >
+            F
+          </span>{' '}
+          <span
+            className={styles.unit}
+            onClick={() => handleUnitButtonClick('metric')}
+          >
+            M
+          </span>{' '}
+        </div>
       </div>
       <CountriesTable countries={filteredCountries} />
     </Layout>
   )
 }
-
-/* export const getStaticProps = async () => {
-  const res = await fetch('https://restcountries.eu/rest/v2/all')
-  const countries = await res.json()
-
-  return {
-    props: {
-      countries,
-    },
-  }
-} */
