@@ -7,6 +7,8 @@ import { useState, useContext } from 'react'
 import styles from './CountriesTable.module.css'
 import { CountriesContext } from '../../libs/countries-context'
 
+import { nanoid } from 'nanoid'
+
 const orderBy = (countries, value, direction) => {
   return direction === 'asc'
     ? [...countries].sort((a, b) => (a[value] > b[value] ? 1 : -1))
@@ -25,12 +27,11 @@ const SortArrow = ({ direction }) => {
   )
 }
 
-// At this point, {countries} is pulled from context state, from Home component
-
-const CountriesTable = ({countries}) => {
+const CountriesTable = ({ countries }) => {
   const [state, dispatch] = useContext(CountriesContext)
-  const [direction, setDirection] = useState()
-  const [value, setValue] = useState()
+  const [direction, setDirection] = useState('asc')
+  const [value, setValue] = useState('name')
+  console.log('CountriesTable countries', countries[0])
   const orderedCountries = orderBy(countries, value, direction)
 
   const switchDirection = () =>
@@ -45,9 +46,22 @@ const CountriesTable = ({countries}) => {
     return Math.round(val * 0.6214).toLocaleString()
   }
 
+  const countries2 = countries.map((country) => {
+    return new Object({
+      id: nanoid(),
+      name: country.name,
+      capital: country.capital,
+      region: country.region,
+      subregion: country.subregion,
+      flag: country.flag,
+      population: country.population,
+      area: country.area,
+      alpha3Code: country.alpha3Code,
+    })
+  })
   return (
     <div>
-      <div className={styles.heading}>
+      <div id="country-heading" className={styles.heading}>
         <div className={styles.heading_flag}></div>
 
         <button
@@ -72,35 +86,28 @@ const CountriesTable = ({countries}) => {
           className={styles.heading_area}
           onClick={() => setValueAndDirection('area')}
         >
-          {/*  <div>
-            Area (km<sup style={{ fontSize: '0.5rem' }}>2</sup>)
-          </div> */}
           <div>
             Area ({state.unit === 'metric' ? 'km' : 'mi'}
             <sup style={{ fontSize: '0.5rem' }}>2</sup>)
           </div>
+
           {value === 'area' && <SortArrow direction={direction} />}
         </button>
-
-        {/*  <button
-          className={styles.heading_gini}
-          onClick={() => setValueAndDirection('gini')}
-        >
-          <div>Gini</div>
-
-          {value === 'gini' && <SortArrow direction={direction} />}
-        </button> */}
       </div>
-      {orderedCountries.map((country) => (
-        <Link href={`/country/${country.alpha3Code}`} key={country.name}>
+      {orderedCountries.map((country) => {
+        //  console.log('country', country[0])
+        /*  return (
           <div className={styles.row}>
             <div className={styles.flag}>
               <img src={country.flag} alt={country.name} />
             </div>
             <div className={styles.name}>{country.name}</div>
             <div className={styles.population}>
-              {country.population.toLocaleString() || `No Data`}
+              {country.population === 0
+                ? 'No Data'
+                : country.population.toLocaleString()}
             </div>
+
             <div className={styles.area}>
               {country.area === null
                 ? 'No data'
@@ -109,8 +116,33 @@ const CountriesTable = ({countries}) => {
                 : unitConvert(country.area)}
             </div>
           </div>
-        </Link>
-      ))}
+        ) */
+
+        return (
+          <Link href={`/country/${country.alpha3Code}`} key={country.name}>
+            {JSON.stringify(country.alpha3Code)}
+            <div className={styles.row}>
+              <div className={styles.flag}>
+                <img src={country.flag} alt={country.name} />
+              </div>
+              <div className={styles.name}>{country.name}</div>
+              <div className={styles.population}>
+                {country.population === 0
+                  ? 'No Data'
+                  : country.population.toLocaleString()}
+              </div>
+
+              <div className={styles.area}>
+                {country.area === null
+                  ? 'No data'
+                  : state.unit === 'metric'
+                  ? country.area.toLocaleString()
+                  : unitConvert(country.area)}
+              </div>
+            </div>
+          </Link>
+        )
+      })}
     </div>
   )
 }

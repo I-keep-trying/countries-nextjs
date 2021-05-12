@@ -4,14 +4,13 @@ import CountriesTable from '../components/CountriesTable/CountriesTable'
 import Layout from '../components/Layout/Layout'
 import SearchInput from '../components/SearchInput/SearchInput'
 import styles from '../styles/Home.module.css'
-import countries from '../countriesList'
 import { CountriesContext } from '../libs/countries-context'
 
 export default function Home() {
   const [state, dispatch] = useContext(CountriesContext)
   const [keyword, setKeyword] = useState('')
-
-  const filteredCountries = countries.filter((country) =>
+  //console.log('countries from Home', state.countries[0])
+  const filteredCountries = state.countries.filter((country) =>
     country.name.toLowerCase().startsWith(keyword)
   )
 
@@ -64,3 +63,14 @@ export default function Home() {
     </Layout>
   )
 }
+
+/* export const getStaticProps = async () => {
+  const res = await fetch('https://restcountries.eu/rest/v2/all')
+  const countries = await res.json()
+
+  return {
+    props: {
+      countries,
+    },
+  }
+} */

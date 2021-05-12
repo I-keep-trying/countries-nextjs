@@ -8,15 +8,33 @@ import { CountriesContext } from '../../libs/countries-context'
 const Layout = ({ children, title = 'World Ranks' }) => {
   const [state, dispatch] = useContext(CountriesContext)
   console.log('state', state.theme)
-  const [theme, setTheme] = useState('light')
+  // const [theme, setTheme] = useState('light')
+
+  useEffect(() => {
+    console.log('useEffect get local theme', localStorage.getItem('theme'))
+    if (localStorage.getItem('theme') !== null) {
+      document.documentElement.setAttribute(
+        'data-theme',
+        localStorage.getItem('theme')
+      )
+      dispatch({
+        type: 'SET_THEME',
+        payload: localStorage.getItem('theme'),
+      })
+    }
+  }, [])
 
   const switchTheme = () =>
-    theme === 'light' ? saveTheme('dark') : saveTheme('light')
+    state.theme === 'light' ? saveTheme('dark') : saveTheme('light')
 
   const saveTheme = (theme) => {
-    setTheme(theme)
+    // setTheme(state.theme)
     localStorage.setItem('theme', theme)
     document.documentElement.setAttribute('data-theme', theme)
+    dispatch({
+      type: 'SET_THEME',
+      payload: theme,
+    })
   }
 
   return (

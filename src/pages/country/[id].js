@@ -142,7 +142,7 @@ export const getStaticPaths = async () => {
     paths,
     fallback: false,
   }
-}
+} 
 
 export const getStaticProps = async ({ params }) => {
   const country = await getCountry(params.id)
