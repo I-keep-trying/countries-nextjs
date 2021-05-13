@@ -7,11 +7,8 @@ import { CountriesContext } from '../../libs/countries-context'
 
 const Layout = ({ children, title = 'World Ranks' }) => {
   const [state, dispatch] = useContext(CountriesContext)
-  console.log('state', state.theme)
-  // const [theme, setTheme] = useState('light')
 
   useEffect(() => {
-    console.log('useEffect get local theme', localStorage.getItem('theme'))
     if (localStorage.getItem('theme') !== null) {
       document.documentElement.setAttribute(
         'data-theme',
@@ -28,7 +25,6 @@ const Layout = ({ children, title = 'World Ranks' }) => {
     state.theme === 'light' ? saveTheme('dark') : saveTheme('light')
 
   const saveTheme = (theme) => {
-    // setTheme(state.theme)
     localStorage.setItem('theme', theme)
     document.documentElement.setAttribute('data-theme', theme)
     dispatch({

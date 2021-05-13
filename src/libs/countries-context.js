@@ -59,7 +59,6 @@ const reducer = (state, action) => {
         weather: action.payload,
       }
     case 'SET_THEME':
-      console.log('action.payload theme', action.payload)
       return {
         ...state,
         theme: action.payload,

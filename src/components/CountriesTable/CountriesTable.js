@@ -72,9 +72,6 @@ const CountriesTable = ({countries}) => {
           className={styles.heading_area}
           onClick={() => setValueAndDirection('area')}
         >
-          {/*  <div>
-            Area (km<sup style={{ fontSize: '0.5rem' }}>2</sup>)
-          </div> */}
           <div>
             Area ({state.unit === 'metric' ? 'km' : 'mi'}
             <sup style={{ fontSize: '0.5rem' }}>2</sup>)
