@@ -59,7 +59,7 @@ const Country = ({ country }) => {
       })
     }
   }, [state.unit])
-  console.log('state.weather', state.weather)
+  // console.log('state.weather', state.weather)
 
   return (
     <Layout title={country.name}>
@@ -178,7 +178,7 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({ params }) => {
   const country = await getCountry(params.id)
-  console.log('params', params)
+  // console.log('params', params)
 
   return {
     props: {

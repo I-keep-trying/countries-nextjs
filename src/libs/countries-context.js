@@ -21,10 +21,11 @@ const reducer = (state, action) => {
       return {
         ...initialState,
         countries: initialState.countries.filter((country) => {
-          return country.id === action.payload
+          return country.name.toLowerCase().startsWith(action.payload)
         }),
       }
     case 'SELECT_REGION':
+      console.log('action.payload', action.payload)
       return action.payload === 'All'
         ? { ...state, countries: initialState.countries }
         : {
@@ -38,8 +39,8 @@ const reducer = (state, action) => {
           }
     case 'SELECT_SUBREGION':
       return {
-        ...initialState,
-        countries: initialState.countries.filter((country) => {
+        ...state,
+        countries: state.countries.filter((country) => {
           return country.subregion === action.payload
         }),
       }

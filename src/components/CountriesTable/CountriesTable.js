@@ -1,11 +1,30 @@
 import Link from 'next/link'
 import {
-  KeyboardArrowDownRounded,
-  KeyboardArrowUpRounded,
-} from '@material-ui/icons'
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Button,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Select,
+  Text,
+  Stack,
+  HStack,
+  VStack,
+  Flex,
+  Image,
+} from '@chakra-ui/react'
+import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import { useState, useContext } from 'react'
-import styles from './CountriesTable.module.css'
 import { CountriesContext } from '../../libs/countries-context'
+
+import { nanoid } from 'nanoid'
 
 const orderBy = (countries, value, direction) => {
   return direction === 'asc'
@@ -14,23 +33,14 @@ const orderBy = (countries, value, direction) => {
 }
 
 const SortArrow = ({ direction }) => {
-  return direction === 'desc' ? (
-    <div className={styles.heading_arrow}>
-      <KeyboardArrowDownRounded color="inherit" />
-    </div>
-  ) : (
-    <div className={styles.heading_arrow}>
-      <KeyboardArrowUpRounded color="inherit" />
-    </div>
-  )
+  return direction === 'desc' ? <TriangleDownIcon /> : <TriangleUpIcon />
 }
 
-// At this point, {countries} is pulled from context state, from Home component
-
-const CountriesTable = ({countries}) => {
+const CountriesTable = ({ countries }) => {
   const [state, dispatch] = useContext(CountriesContext)
-  const [direction, setDirection] = useState()
-  const [value, setValue] = useState()
+  const [direction, setDirection] = useState('asc')
+  const [value, setValue] = useState('name')
+
   const orderedCountries = orderBy(countries, value, direction)
 
   const switchDirection = () =>
@@ -45,71 +55,86 @@ const CountriesTable = ({countries}) => {
     return Math.round(val * 0.6214).toLocaleString()
   }
 
+  const countriesLabel = state.countries.length === 1 ? 'country' : 'countries'
+
   return (
-    <div>
-      <div className={styles.heading}>
-        <div className={styles.heading_flag}></div>
+    <VStack style={{ paddingTop: 80 }}>
+      <Text style={{ paddingBottom: 20 }}>
+        Found {state.countries.length} {countriesLabel}
+      </Text>
+     
+      <Table size="sm">
+        <Thead>
+          <Tr>
+            <Th></Th>
+            <Th
+              style={{ cursor: 'pointer' }}
+              onClick={() => setValueAndDirection('name')}
+            >
+              Name {value === 'name' && <SortArrow direction={direction} />}
+            </Th>
+            <Th
+              style={{ cursor: 'pointer' }}
+              onClick={() => setValueAndDirection('population')}
+            >
+              Population
+              {value === 'population' && <SortArrow direction={direction} />}
+            </Th>
+            <Th
+              style={{ cursor: 'pointer' }}
+              onClick={() => setValueAndDirection('area')}
+            >
+              Area ({state.unit === 'metric' ? 'km' : 'mi'}
+              <sup style={{ fontSize: '0.5rem' }}>2</sup>)
+              {value === 'area' && <SortArrow direction={direction} />}
+            </Th>
+          </Tr>
+        </Thead>
 
-        <button
-          className={styles.heading_name}
-          onClick={() => setValueAndDirection('name')}
-        >
-          <div>Name</div>
-
-          {value === 'name' && <SortArrow direction={direction} />}
-        </button>
-
-        <button
-          className={styles.heading_population}
-          onClick={() => setValueAndDirection('population')}
-        >
-          <div>Population</div>
-
-          {value === 'population' && <SortArrow direction={direction} />}
-        </button>
-
-        <button
-          className={styles.heading_area}
-          onClick={() => setValueAndDirection('area')}
-        >
-          <div>
-            Area ({state.unit === 'metric' ? 'km' : 'mi'}
-            <sup style={{ fontSize: '0.5rem' }}>2</sup>)
-          </div>
-          {value === 'area' && <SortArrow direction={direction} />}
-        </button>
-
-        {/*  <button
-          className={styles.heading_gini}
-          onClick={() => setValueAndDirection('gini')}
-        >
-          <div>Gini</div>
-
-          {value === 'gini' && <SortArrow direction={direction} />}
-        </button> */}
-      </div>
-      {orderedCountries.map((country) => (
-        <Link href={`/country/${country.alpha3Code}`} key={country.name}>
-          <div className={styles.row}>
-            <div className={styles.flag}>
-              <img src={country.flag} alt={country.name} />
-            </div>
-            <div className={styles.name}>{country.name}</div>
-            <div className={styles.population}>
-              {country.population.toLocaleString() || `No Data`}
-            </div>
-            <div className={styles.area}>
-              {country.area === null
-                ? 'No data'
-                : state.unit === 'metric'
-                ? country.area.toLocaleString()
-                : unitConvert(country.area)}
-            </div>
-          </div>
-        </Link>
-      ))}
-    </div>
+        <Tbody>
+          {orderedCountries.map((country) => (
+            <Link href={`/country/${country.alpha3Code}`} key={country.name}>
+              <Tr key={country.id}>
+                <Td>
+                  <Image
+                    boxSize="50px"
+                    objectFit="contain"
+                    src={country.flag}
+                  />{' '}
+                </Td>
+                <Td>{country.name}</Td>
+                <Td>{country.population.toLocaleString() || `No Data`}</Td>
+                <Td>
+                  {country.area === null
+                    ? 'No data'
+                    : state.unit === 'metric'
+                    ? country.area.toLocaleString()
+                    : unitConvert(country.area)}
+                </Td>
+              </Tr>
+            </Link>
+          ))}
+        </Tbody>
+      </Table>
+    </VStack>
   )
 }
 
 export default CountriesTable
+
+/*  
+  In case initial data needs re-configured
+
+   const countries2 = countries.map((country) => {
+    return new Object({
+      id: nanoid(),
+      name: country.name,
+      capital: country.capital,
+      region: country.region,
+      subregion: country.subregion,
+      flag: country.flag,
+      population: country.population,
+      area: country.area,
+      alpha3Code: country.alpha3Code,
+    })
+  }) */

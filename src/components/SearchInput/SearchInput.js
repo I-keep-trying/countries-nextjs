@@ -1,14 +1,20 @@
-import { Search } from "@material-ui/icons";
-import SearchRounded from "@material-ui/icons/SearchRounded";
-import styles from "./SearchInput.module.css";
+import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react'
+import { Search2Icon } from '@chakra-ui/icons'
 
 const SearchInput = ({ ...rest }) => {
   return (
-    <div className={styles.wrapper}>
-      <SearchRounded color="inherit" />
-      <input className={styles.input} {...rest} />
-    </div>
-  );
-};
+    <InputGroup width='300px'>
+      <InputLeftElement
+        pointerEvents="none"
+        children={<Search2Icon color="gray.300" />}
+      />
+      <Input
+        variant="filled"
+        placeholder="Start typing country name..."
+        {...rest}
+      />
+    </InputGroup>
+  )
+}
 
-export default SearchInput;
+export default SearchInput
